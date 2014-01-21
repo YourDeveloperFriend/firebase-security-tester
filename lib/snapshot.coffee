@@ -1,12 +1,12 @@
 
 _ = require 'underscore'
 String.prototype.beginsWith = (string)->
-	@indexOf(string) === 0
+	@indexOf(string) is 0
 String.prototype.endsWith = (string)->
-	@indexOf(string) === @length - string.length
+	@indexOf(string) is @length - string.length
 String.prototype.contains = (string)->
 	-1 isnt @indexOf(string)
-class Snapshot
+module.exports = class Snapshot
 	constructor: (@_parent, @_key, @priority)->
 		@children = {}
 		@_data = @_parent.children[@_key]
@@ -17,8 +17,10 @@ class Snapshot
 		@_data
 	child: (child_name)->
 		unless @hasChild child_name
-			@children[value] = new Snapshot @, child_name
-		@children[value]
+			@children[child_name] = new Snapshot @, child_name
+			if @dynamic_child_rules
+				@children[child_name].applyRules @dynamic_child_rules.$val, @dynamic_child_rules.$key
+		@children[child_name]
 			
 	parent: (parent)->
 		@_parent
@@ -41,21 +43,23 @@ class Snapshot
 		@var_name = var_name
 		@readRule = rules['.read'] or false
 		@writeRule = rules['.write'] or false
+		@validateRule = rules['.validate'] or false
 		$others = []
 		keys = _.union Object.keys(@children), Object.keys(rules)
-		for key in keys when -1 is ['.read', 'write'].indexOf key
-			if @hasChild(key)
-				@child(key).applyRules(value)
-			else if rules[key]?
+		for key in keys when -1 is ['.read', '.write', '.validate'].indexOf key
+			if rules[key]?
 				if key[0] is '$'
 					throw new Error("Cannot have multiple default rules: ('#{$key}, #{key}')") if $val
 					$key = key
-					$val = value
+					$val = rules[key]
 				else
-					@child(key).applyRules(value)
+					@child(key).applyRules(rules[key])
 			else
-				$others.push key
+				$others.push @children[key]
 		if $val
+			@dynamic_child_rules =
+				$val: $val
+				$key: $key
 			for $other in $others
 				$other.applyRules($val, $key)
 	canRead: (runData, parsedUrl, runningValue, i = 0)->
@@ -68,14 +72,16 @@ class Snapshot
 		unless i + 1 > parsedUrl.length
 			@child(parsedUrl[i]).canRead(runData, parsedUrl, runningValue, i + 1)
 	runRule: (runData, rule, newData)->
+		return rule if _.isBoolean rule
+		return false if _.isUndefined rule
 		auth = runData.auth
 		$variables = runData.$variables
 		now = runData.now
 		root = runData.root
 		data = @
+		newRule = rule.replace /\$/, '$variables.$'
 		result = eval(rule)
-		throw new Error "Rule '#{rule}' did not return a boolean"
+		console.log result, data.val()
+		throw new Error "Rule '#{rule}' did not return a boolean" unless _.isBoolean result
 		result
 
-module.exports = Snapshot
-console.log Snapshot

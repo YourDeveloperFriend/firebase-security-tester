@@ -18,5 +18,9 @@
   "homepage": "https://github.com/YourDeveloperFriend/firebase-security-tester",
   "dependencies": {
     "underscore": "~1.5.2"
+  },
+  "devDependencies": {
+    "mocha": "~1.17.0",
+    "assert": "~1.1.0"
   }
 }

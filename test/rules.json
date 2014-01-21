@@ -1,0 +1,34 @@
+{
+  "rules": {
+    ".write": false,
+    ".read": false,
+    "readAnything": {
+      ".read": true
+    },
+    "cantRead": {
+      "canRead": {
+        ".read": true,
+        "stillCanRead": {
+          ".read": false
+        }
+      },
+      "cantRead": {
+        ".read": false
+      },
+      "$other": {
+        ".read": true
+      }
+    },
+    "logic": {
+      "simple": {
+        ".read": "5+5==10"
+      },
+      "simplefail": {
+        ".read": "5+5==11"
+      },
+      "readVal": {
+        ".read": "data.val()==11"
+      }
+    }
+  }
+}

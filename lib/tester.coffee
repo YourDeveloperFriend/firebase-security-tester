@@ -19,7 +19,8 @@ module.exports = class Tester
 			$variables: {}
 			now: new Date().getTime()
 			auth: {}
-		@root.canRead parsed, runningValue
+		@root.canRead runData, parsed, runningValue
+		runningValue
 	canWrite: (url, newValue)->
 		
 	actuallyWrite: (url, newValue)->
@@ -27,4 +28,4 @@ module.exports = class Tester
 	actuallyRead: (url)->
 
 	parseUrl: (url)->
-		url.split /\//
+		url.substr(1).split /\//
