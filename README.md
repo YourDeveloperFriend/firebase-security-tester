@@ -32,7 +32,7 @@ Enter the Firebase Security Rules Tester. It's usage is simple:
     // };
 
 
-Note: Right now the rules are evaluated using the eval() statement, so the rules will have to be self-moderated somewhat. I am currently working on an evaluation system so that the rules can be analyzed just like the firebase api.
+Note: Right now the rules are evaluated using the eval() statement, so the rules will have to be self-moderated somewhat. I am currently working on an evaluation system so that the rules can be analyzed just like the firebase api. (I'm trying to create a grammar here: http://pegjs.majda.cz/online, but it's kicking my butt. Any help would be appreciated.)
 
 Coming Soon:
  - Validation handling
