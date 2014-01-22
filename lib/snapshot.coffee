@@ -9,10 +9,13 @@ String.prototype.contains = (string)->
 module.exports = class Snapshot
 	constructor: (@_parent, @_key, @priority)->
 		@children = {}
-		@_data = @_parent.children[@_key]
+		@setData @_parent._data?[@_key]
+	setData: (data)->
+		@_data = data
 		if _.isObject @_data
 			for key, value of @_data
 				@children[key] = new Snapshot(@, key)
+
 	val: ->
 		@_data
 	child: (child_name)->
@@ -26,8 +29,23 @@ module.exports = class Snapshot
 		@_parent
 	hasChild: (child_name)->
 		@children[child_name]?
-	hasChildren: ->
-		Object.keys(@children).length > 0
+	hasChildren: (required)->
+		if required
+			Object.keys(@children).length > 0
+		else
+			hasChildren = true
+			hasChildren and= @hasChild child for child in required
+			hasChildren
+	actuallyRead: (urlParts, i = 0)->
+		if i >= urlParts.length
+			@val()
+		else
+			@child urlParts[i], i + 1
+	actuallyWrite: (urlParts, data, i = 0)->
+		if i >= urlParts.length
+			@setData data
+		else
+			@child urlParts[i], i + 1
 	exists: ->
 		@_data?
 	getPriority: ->
@@ -62,15 +80,17 @@ module.exports = class Snapshot
 				$key: $key
 			for $other in $others
 				$other.applyRules($val, $key)
-	canRead: (runData, parsedUrl, runningValue, i = 0)->
+	canAccess: (runData, parsedUrl, runningValue, i = 0)->
 		runData.$variables[@$var_name] = @ if @$var_name
-		result = @runRule(runData, @readRule)
+		rule = if runData.newData then @writeRule else @readRule
+		result = @runRule(runData, rule)
 		runningValue.value or= result
 		runningValue.results.push
 			url: '/' + parsedUrl.slice(0, i).join '/'
+			rule: rule
 			result: result
 		unless i + 1 > parsedUrl.length
-			@child(parsedUrl[i]).canRead(runData, parsedUrl, runningValue, i + 1)
+			@child(parsedUrl[i]).canAccess(runData, parsedUrl, runningValue, i + 1)
 	runRule: (runData, rule, newData)->
 		return rule if _.isBoolean rule
 		return false if _.isUndefined rule
@@ -81,7 +101,6 @@ module.exports = class Snapshot
 		data = @
 		newRule = rule.replace /\$/, '$variables.$'
 		result = eval(rule)
-		console.log result, data.val()
 		throw new Error "Rule '#{rule}' did not return a boolean" unless _.isBoolean result
 		result
 

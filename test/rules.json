@@ -3,31 +3,53 @@
     ".write": false,
     ".read": false,
     "readAnything": {
-      ".read": true
+      ".read": true,
+      ".write": true
     },
     "cantRead": {
       "canRead": {
         ".read": true,
+        ".write": true,
         "stillCanRead": {
+          ".write": false,
           ".read": false
         }
       },
       "cantRead": {
-        ".read": false
+        ".read": false,
+        ".write": false
       },
       "$other": {
-        ".read": true
+        ".read": true,
+        ".write": true
       }
     },
     "logic": {
       "simple": {
-        ".read": "5+5==10"
+        ".read": "5+5==10",
+        ".write": "5+5==10"
       },
       "simplefail": {
-        ".read": "5+5==11"
+        ".read": "5+5==11",
+        ".write": "5+5==11"
       },
       "readVal": {
-        ".read": "data.val()==11"
+        ".read": "data.val()==11",
+        ".write": "data.val()==11"
+      },
+      "dontReadVal": {
+        ".read": "data.val()!=11",
+        ".write": "data.val()!=11"
+      },
+      "testChild": {
+        ".read": "data.child('booya').val()==5",
+        ".write": "data.child('booya').val()==5"
+      }
+    },
+    "newOnly": {
+      ".read": true,
+      "$child": {
+        ".write": "!data.exists()"
       }
     }
   }

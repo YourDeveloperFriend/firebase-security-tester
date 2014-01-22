@@ -4,7 +4,8 @@
   "description": "Used to unit test firebase security rules",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/test.coffee -r coffee-script"
+    "test": "mocha test/test.coffee -r coffee-script",
+    "watch": "mocha test/test.coffee -r coffee-script -w"
   },
   "repository": {
     "type": "git",

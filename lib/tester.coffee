@@ -6,10 +6,22 @@ module.exports = class Tester
 		@setData(data)
 		@root.applyRules(rules)
 	setData: (data)->
-		parent = children: root: data
-		root = new Snapshot parent, 'root'
-		@root = root
+		@originalData = data
+		@root = @createRoot data
+	createRoot: (data)->
+		parent = _data: root: data
+		new Snapshot parent, 'root'
+	setAuth: (auth)->
+		@auth = auth
 	canRead: (url)->
+		@canAccess url
+	canWrite: (url, newValue)->
+		parsed = @parseUrl url
+		# should I create a new tree? Yes
+		newRoot = @createRoot(@originalData)
+		newData = newRoot.actuallyWrite(parsed, newValue)
+		@canAccess url, newData
+	canAccess: (url, newData)->
 		parsed = @parseUrl url
 		runningValue =
 			value: false
@@ -18,14 +30,16 @@ module.exports = class Tester
 			root: @root
 			$variables: {}
 			now: new Date().getTime()
-			auth: {}
-		@root.canRead runData, parsed, runningValue
+			auth: @auth
+			newData: newData
+		@root.canAccess runData, parsed, runningValue
 		runningValue
-	canWrite: (url, newValue)->
 		
 	actuallyWrite: (url, newValue)->
+		@root.actuallyWrite url, newValue
 
 	actuallyRead: (url)->
+		@root.actuallyRead @parseUrl url
 
 	parseUrl: (url)->
 		url.substr(1).split /\//
