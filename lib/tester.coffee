@@ -1,10 +1,14 @@
 
+Rule = require './rule'
 Snapshot = require './snapshot'
 
 module.exports = class Tester
 	constructor: (data, rules)->
 		@setData(data)
 		@root.applyRules(rules)
+		return
+	ready: ->
+		Rule.ready
 	setData: (data)->
 		@originalData = data
 		@root = @createRoot data

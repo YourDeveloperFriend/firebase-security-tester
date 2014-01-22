@@ -1,5 +1,6 @@
 
 _ = require 'underscore'
+RuleParser = require './rule'
 String.prototype.beginsWith = (string)->
 	@indexOf(string) is 0
 String.prototype.endsWith = (string)->
@@ -100,7 +101,7 @@ module.exports = class Snapshot
 		root = runData.root
 		data = @
 		newRule = rule.replace /\$/, '$variables.$'
-		result = eval(rule)
+		result = RuleParser.executeRule(runData, rule)
 		throw new Error "Rule '#{rule}' did not return a boolean" unless _.isBoolean result
 		result
 

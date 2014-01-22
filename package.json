@@ -19,7 +19,8 @@
   "homepage": "https://github.com/YourDeveloperFriend/firebase-security-tester",
   "dependencies": {
     "underscore": "~1.5.2",
-    "pegjs": "~0.8.0"
+    "pegjs": "~0.8.0",
+    "q": "~1.0.0"
   },
   "devDependencies": {
     "mocha": "~1.17.0",
