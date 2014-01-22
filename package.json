@@ -1,6 +1,6 @@
 {
   "name": "firebase-security-tester",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Used to unit test firebase security rules",
   "main": "index.js",
   "scripts": {

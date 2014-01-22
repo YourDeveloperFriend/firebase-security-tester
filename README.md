@@ -3,6 +3,10 @@ Firebase Security Rules Tester
 
 Writing firebase security rules is tough, and it's hard to know whether or not they're working properly. The last thing you want is to leave a hole in your system that other's can read or write what they shouldn't have access to. Unfortunately, the firebase simulator kind of sucks. It's tedious and time consuming, and difficult to maintain consistency.
 
+To Install:
+
+    npm install firebase-security-tester
+
 Enter the Firebase Security Rules Tester. It's usage is simple:
 
     var Tester = require('firebase-security-tester'),
