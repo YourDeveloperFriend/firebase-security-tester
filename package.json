@@ -20,7 +20,8 @@
   "dependencies": {
     "underscore": "~1.5.2",
     "pegjs": "~0.8.0",
-    "q": "~1.0.0"
+    "q": "~1.0.0",
+    "uuid": "~1.4.1"
   },
   "devDependencies": {
     "mocha": "~1.17.0",

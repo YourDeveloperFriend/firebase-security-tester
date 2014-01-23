@@ -43,7 +43,7 @@
         return done();
       }).fail(done);
     });
-    describe.only('RuleParser', function() {
+    describe('RuleParser', function() {
       it('should be able to add', function() {
         return assert.equal(10, RuleParser.executeRule({
           $variables: []
@@ -82,12 +82,20 @@
           },
           $variables: []
         }, 'data.booya'));
-        return assert.equal('g', RuleParser.executeRule({
+        assert.equal('g', RuleParser.executeRule({
           data: {
             booya: 'g'
           },
           $variables: []
         }, 'data["booya"]'));
+        return assert.equal('g', RuleParser.executeRule({
+          data: {
+            booya: function() {
+              return 'g';
+            }
+          },
+          $variables: []
+        }, 'data.booya()'));
       });
     });
     describe('canRead', function() {

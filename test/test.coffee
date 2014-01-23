@@ -27,7 +27,7 @@ describe 'Tester', ->
 		tester.ready().then ->
 			done()
 		.fail done
-	describe.only 'RuleParser', ->
+	describe 'RuleParser', ->
 		it 'should be able to add', ->
 			assert.equal 10, RuleParser.executeRule({$variables: []}, '5+5')
 		it 'should be able to multiply', ->
@@ -43,7 +43,7 @@ describe 'Tester', ->
 		it 'should be able to access the inherent objects', ->
 			assert.equal 'g', RuleParser.executeRule({data: {booya: 'g'}, $variables: []}, 'data.booya')
 			assert.equal 'g', RuleParser.executeRule({data: {booya: 'g'}, $variables: []}, 'data["booya"]')
-			#assert.equal 'g', RuleParser.executeRule({data: {booya: ->'g'}, $variables: []}, 'data.booya()')
+			assert.equal 'g', RuleParser.executeRule({data: {booya: ->'g'}, $variables: []}, 'data.booya()')
 	describe 'canRead', ->
 		it 'shouldn\'t be able to read root', ->
 			assert.equal false, tester.canRead('/').value

@@ -95,13 +95,13 @@ module.exports = class Snapshot
 	runRule: (runData, rule, newData)->
 		return rule if _.isBoolean rule
 		return false if _.isUndefined rule
-		auth = runData.auth
-		$variables = runData.$variables
-		now = runData.now
-		root = runData.root
-		data = @
-		newRule = rule.replace /\$/, '$variables.$'
-		result = RuleParser.executeRule(runData, rule)
+		localVariables =
+			auth: runData.auth
+			$variables: runData.$variables
+			now: runData.now
+			root: runData.root
+			data: @
+		result = RuleParser.executeRule(localVariables, rule)
 		throw new Error "Rule '#{rule}' did not return a boolean" unless _.isBoolean result
 		result
 
