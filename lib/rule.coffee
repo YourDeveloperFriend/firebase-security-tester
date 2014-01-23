@@ -3,14 +3,12 @@ PEG = require 'pegjs'
 overrideAction = require 'pegjs-override-action'
 fs = require 'fs'
 Q = require 'q'
-_ = require 'underscore'
 uuid = require 'uuid'
 cache = require './cache'
 
-module.exports = class RuleParser
-	@setData = (data)-> @data = data
-	@executeRule: (ruleData, rule)->
-		throw new Error 'Tester is not ready. Please check tester.ready()' unless @data
+class RuleParser
+	constructor: (@data)->
+	executeRule: (ruleData, rule)->
 		id = uuid.v4()
 		# First replace the fillin with the variables
 		replaceWith = []
@@ -38,5 +36,6 @@ module.exports = class RuleParser
 					rawObject: variableValues
 
 		parser.parse rule
-	@ready: Q.nfcall(fs.readFile, __dirname + '/grammar.pegjs', 'utf8').then (data)->
-		RuleParser.setData data
+
+data = fs.readFileSync __dirname + '/grammar.pegjs', 'utf8'
+module.exports = new RuleParser(data)

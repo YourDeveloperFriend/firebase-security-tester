@@ -37,11 +37,8 @@
   describe('Tester', function() {
     var tester;
     tester = null;
-    beforeEach(function(done) {
-      tester = new Tester(test_data, rules);
-      return tester.ready().then(function() {
-        return done();
-      }).fail(done);
+    beforeEach(function() {
+      return tester = new Tester(test_data, rules);
     });
     describe('RuleParser', function() {
       it('should be able to add', function() {

@@ -7,8 +7,6 @@ module.exports = class Tester
 		@setData(data)
 		@root.applyRules(rules)
 		return
-	ready: ->
-		Rule.ready
 	setData: (data)->
 		@originalData = data
 		@root = @createRoot data

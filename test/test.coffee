@@ -1,5 +1,5 @@
 
-Tester = require '../lib/tester'
+Tester = require '../'
 assert = require 'assert'
 RuleParser = require '../lib/rule'
 
@@ -22,11 +22,8 @@ test_data =
 
 describe 'Tester', ->
 	tester = null
-	beforeEach (done)->
+	beforeEach ->
 		tester = new Tester test_data, rules
-		tester.ready().then ->
-			done()
-		.fail done
 	describe 'RuleParser', ->
 		it 'should be able to add', ->
 			assert.equal 10, RuleParser.executeRule({$variables: []}, '5+5')
