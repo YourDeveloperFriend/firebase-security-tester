@@ -32,10 +32,9 @@ Enter the Firebase Security Rules Tester. It's usage is simple:
     // };
 
 
-Note: Right now the rules are evaluated using the eval() statement, so the rules will have to be self-moderated somewhat. I am currently working on an evaluation system so that the rules can be analyzed just like the firebase api. (I'm trying to create a grammar here: http://pegjs.majda.cz/online, but it's kicking my butt. Any help would be appreciated.)
+Note about the grammar: Right now, I'm using pegjs grammar to parse the rules in the security.json. It's still in the beta stage, so let me know about any unexpected errors or bugs.
 
 Coming Soon:
  - Validation handling
- - Rule parsing system for better analysis of rules
 
 To find out more about firebase's rules system, read here: https://www.firebase.com/docs/security/rule-expressions/index.html
